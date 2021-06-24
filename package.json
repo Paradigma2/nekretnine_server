@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.10",
     "@types/express": "^4.17.8",
+    "@types/multer": "^1.4.5",
     "@types/pg": "^7.14.4",
     "concurrently": "^5.3.0",
     "nodemon": "^2.0.4",
@@ -19,7 +21,9 @@
   },
   "dependencies": {
     "class-validator": "^0.12.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "multer": "^1.4.2",
     "pg": "^8.3.3",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.26"

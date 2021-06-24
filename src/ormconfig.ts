@@ -4,12 +4,12 @@ export const ormConfig: ConnectionOptions = {
     cli: {
       migrationsDir: "src/migrations",
     },
-    database: 'ljubitelj',
+    database: 'agency',
     entities: [
         __dirname + '/entities/*{.ts,.js}',
     ],
     host: 'localhost',
-    password: 'postgres',
+    password: 'root',
     port: 5432,
     synchronize: true,
     type: 'postgres',

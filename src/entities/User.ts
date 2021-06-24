@@ -1,48 +1,49 @@
-import {IsDate, IsEmail, IsEnum} from 'class-validator';
-import {Entity, PrimaryGeneratedColumn, Column, Unique} from 'typeorm';
+import { ChildEntity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { IsEnum } from 'class-validator';
+import { Agency } from './Agency';
+import { Conversation } from './Conversation';
+import { Owner } from './Owner';
+import { Offer } from './Offer';
 
-export enum userRole {
+export enum UserRole {
     BASIC = 'basic',
-    MOD = 'moderator',
+    AGENT = 'agent',
     ADMIN = 'administrator'
 }
 
-@Entity()
-@Unique(['email', 'username'])
-export class User {
-    @PrimaryGeneratedColumn()
-    public id!: number;
+export enum UserStatus {
+    PENDING = 'pending',
+    REGISTERED = 'registered'
+}
 
-    @Column()
-    public username!: string;
-
+@ChildEntity()
+export class User extends Owner {
     @Column()
     public password?: string;
 
-    @Column()
-    @IsEmail()
-    public email!: string;
-
-    @Column()
+    @Column({ nullable: true })
     public firstName!: string;
 
-    @Column()
+    @Column({ nullable: true })
     public lastName!: string;
 
     @Column()
-    @IsEnum(userRole)
-    public role!: userRole;
+    @IsEnum(UserRole)
+    public role!: UserRole;
+
+    @Column()
+    @IsEnum(UserStatus)
+    public status!: UserStatus;
 
     @Column()
     public profilePicture!: string;
 
-    @Column()
-    @IsDate()
-    public birthday!: Date;
+    @ManyToOne(() => Agency, agency => agency.users, { nullable: true })
+    public agency!: Agency;
 
-    @Column()
-    public country!: string;
+    @OneToMany(() => Conversation, conversation => conversation.buyer)
+    public buyerConversations!: Conversation[];
 
-    @Column()
-    public city!: string;
+    @OneToMany(() => Offer, offer => offer.user)
+    public offers!: Offer[];
 }
