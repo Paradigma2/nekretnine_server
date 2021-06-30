@@ -1,7 +1,7 @@
 import multer from 'multer';
 import { Router } from 'express';
 import { authenticate, createUser, updateUser } from '../controllers/users.controller';
-import { createRealty, indexRealties, updateRealty, createPhoto, indexPhotos } from '../controllers/realties.controller';
+import { createRealty, indexRealties, updateRealty, createPhoto, indexPhotos, getPhoto } from '../controllers/realties.controller';
 import { createOffer, indexOffers, updateOffer, acceptOffer } from '../controllers/offers.controller';
 
 const router = Router();
@@ -26,6 +26,7 @@ router.get('/realties', indexRealties);
 router.put('/realty/:id', updateRealty);
 router.post('/realty/:id/photos', createPhoto);
 router.get('/realty/:id/photos', indexPhotos);
+router.get('/realty/:id/photo', getPhoto);
 
 router.post('/offers', createOffer);
 router.get('/offers', indexOffers);

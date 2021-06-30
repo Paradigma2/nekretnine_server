@@ -17,9 +17,7 @@ export const createUser = async (req: Request, res: Response): Promise<Response>
         user.role = req.body.role || UserRole.BASIC;
         user.status = req.body.status || UserStatus.PENDING;
 
-        if (req.file) {
-            user.profilePicture = req.file.filename;
-        } else user.profilePicture = 'default_profile_picture.jpg';
+        user.profilePicture = req.file?.filename || 'default_profile_picture.jpg';
 
         const errors = await validate(user, { skipMissingProperties: true });
         if (errors.length > 0) { return res.status(422).json(errors); }

@@ -66,18 +66,18 @@ export const updateRealty  = async (req: Request, res: Response): Promise<Respon
     let realty = await entityManger.findOne(Realty, req.params.id);
 
     if (realty) {
-        if (req.body.description) realty.description = req.body.description;
-        if (req.body.address) realty.address = req.body.address;
-        if (req.body.city) realty.city = req.body.city;
-        if (req.body.county) realty.county = req.body.county;
-        if (req.body.level) realty.level = req.body.level;
-        if (req.body.size) realty.size = req.body.size;
-        if (req.body.price) realty.price = req.body.price;
-        if (req.body.roomCount) realty.roomCount = req.body.roomCount;
-        if (req.body.realtyType) realty.realtyType = req.body.realtyType;
-        if (req.body.purpose) realty.purpose = req.body.purpose;
-        if (req.body.status) realty.status = req.body.status;
-        if (req.body.promoted) realty.promoted = req.body.promoted;
+        realty.description = req.body?.description;
+        realty.address = req.body?.address;
+        realty.city = req.body?.city;
+        realty.county = req.body?.county;
+        realty.level = req.body?.level;
+        realty.size = req.body?.size;
+        realty.price = req.body?.price;
+        realty.roomCount = req.body?.roomCount;
+        realty.realtyType = req.body?.realtyType;
+        realty.purpose = req.body?.purpose;
+        realty.status = req.body?.status;
+        realty.promoted = req.body?.promoted;
         await entityManger.save(Realty, realty);
         return res.status(200).json(realty);
     } else {
@@ -112,6 +112,15 @@ export const indexPhotos = async (req: Request, res: Response): Promise<Response
 
     if (req.params.id) photos = await entityManger.find(Photo, { where: { realty: req.params.id } });
     else photos = entityManger.find(Photo);
+
+    return res.status(200).json(photos);
+}
+
+export const getPhoto = async (req: Request, res: Response): Promise<Response> => {
+    const entityManger = getManager();
+    let photos;
+
+    photos = await entityManger.findOne(Photo, { where: { realty: req.params.id } });
 
     return res.status(200).json(photos);
 }
