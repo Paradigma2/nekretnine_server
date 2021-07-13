@@ -21,7 +21,8 @@ export enum OwnerType {
 
 export enum RealtyStatus {
     PENDING = 'pending',
-    REGISTERED = 'registered'
+    REGISTERED = 'registered',
+    SOLD = 'sold'
 }
 
 @Entity()
@@ -61,7 +62,7 @@ export class Realty {
     @IsEnum(Purpose)
     public purpose!: Purpose;
 
-    @Column()
+    @Column({ default: RealtyStatus.PENDING })
     @IsEnum(RealtyStatus)
     public status!: RealtyStatus;
 

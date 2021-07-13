@@ -7,7 +7,7 @@ import { Photo } from '../entities/Photo';
 export const createRealty = async (req: Request, res: Response): Promise<Response> => {
     try {
         const realty = new Realty();
-        const user = req.body.user;
+        // const user = req.body.user;
 
         realty.description = req.body.description;
         realty.address = req.body.address;
@@ -17,23 +17,25 @@ export const createRealty = async (req: Request, res: Response): Promise<Respons
         realty.size = req.body.size;
         realty.price = req.body.price;
         realty.roomCount = req.body.roomCount;
-        realty.realtyType = req.body.type;
+        realty.realtyType = req.body.realtyType;
         realty.purpose = req.body.purpose;
+        realty.ownerType = req.body.ownerType;
+        realty.owner = req.body.owner;
         realty.status = req.body.status || RealtyStatus.PENDING;
         realty.promoted = req.body.promoted || false;
 
-        if (user) {
-            switch(user.role) {
-                case 'basic':
-                    realty.ownerType = OwnerType.USER;
-                    realty.owner = user.id;
-                    break;
-                case 'agent':
-                    realty.ownerType = OwnerType.AGENCY;
-                    realty.owner = user.agency.id;
-                    break;
-            }
-        }
+        // if (user) {
+        //     switch(user.role) {
+        //         case 'basic':
+        //             realty.ownerType = OwnerType.USER;
+        //             realty.owner = user.id;
+        //             break;
+        //         case 'agent':
+        //             realty.ownerType = OwnerType.AGENCY;
+        //             realty.owner = user.agency.id;
+        //             break;
+        //     }
+        // }
 
         const errors = await validate(realty, { skipMissingProperties: true });
         if (errors.length > 0) { return res.status(422).json(errors); }
@@ -54,10 +56,11 @@ export const indexRealties = async (req: Request, res: Response): Promise<Respon
 
     if (req.query.city) filters.city = req.query.city;
     if (req.query.promoted) filters.promoted = req.query.promoted;
+    if (req.query.status) filters.status = req.query.status;
     if (req.query.from) filters.price = MoreThanOrEqual(req.query.from);
     if (req.query.to) filters.price = LessThanOrEqual(req.query.to);
 
-    const realties = await entityManger.find(Realty, filters);
+    let realties = await entityManger.find(Realty, filters);
     return res.status(200).json(realties);
 }
 
@@ -91,7 +94,7 @@ export const createPhoto = async (req: Request, res: Response): Promise<Response
         const photo = new Photo();
 
         const realty = await entityManger.findOne(Realty, req.params.id);
-        photo.filename = req.body.filename;
+        photo.filename = req.file?.filename;
         photo.realty = realty as Realty;
 
         const errors = await validate(photo, { skipMissingProperties: true });

@@ -15,7 +15,6 @@ const storage = multer.diskStorage({
     }
   })
 const upload = multer({ storage: storage })
-// const upload = multer({ dest: './../../../uploads' });
 
 router.post('/users', upload.single('profilePicture'), createUser);
 router.post('/users/authenticate', authenticate);
@@ -24,7 +23,7 @@ router.put('/users/:id', updateUser);
 router.post('/realties', createRealty);
 router.get('/realties', indexRealties);
 router.put('/realty/:id', updateRealty);
-router.post('/realty/:id/photos', createPhoto);
+router.post('/realty/:id/photos', upload.single('photo'), createPhoto);
 router.get('/realty/:id/photos', indexPhotos);
 router.get('/realty/:id/photo', getPhoto);
 
